@@ -102,6 +102,10 @@ public class JmxCollector extends Collector implements Collector.Describable {
         configReloadFailure.inc();
       }
     }
+    
+    public void setJmxUrl(String jmxUrl) {
+      config.jmxUrl = jmxUrl; // as an option
+  }
 
     private Config loadConfig(Map<String, Object> yamlConfig) throws MalformedObjectNameException {
         Config cfg = new Config();
@@ -161,7 +165,7 @@ public class JmxCollector extends Collector implements Collector.Describable {
             cfg.blacklistObjectNames.add(new ObjectName((String)name));
           }
         }
-        
+
         if (yamlConfig.containsKey("whitelistAttributes")) {
           List<Object> names = (List<Object>) yamlConfig.get("whitelistAttributes");
           for (Object name : names) {
@@ -412,22 +416,32 @@ public class JmxCollector extends Collector implements Collector.Describable {
         }
       }
 
-      Receiver receiver = new Receiver();
-      JmxScraper scraper = new JmxScraper(config.jmxUrl, config.username, config.password, config.ssl, config.whitelistObjectNames, config.blacklistObjectNames, receiver);
-      long start = System.nanoTime();
+      String [] urls = config.jmxUrl.split(",");
+      Receiver receiver = new Receiver();;
+      JmxScraper scraper = new JmxScraper("", config.username, config.password, config.ssl, config.whitelistObjectNames, config.blacklistObjectNames, config.whitelistAttributes ,receiver);;
       double error = 0;
-      if ((config.startDelaySeconds > 0) &&
-        ((start - createTimeNanoSecs) / 1000000000L < config.startDelaySeconds)) {
-        throw new IllegalStateException("JMXCollector waiting for startDelaySeconds");
-      }
-      try {
-        scraper.doScrape();
-      } catch (Exception e) {
-        error = 1;
-        StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw));
-        LOGGER.severe("JMX scrape failed: " + sw.toString());
-      }
+      long start = 0;
+
+      for (String url : urls) {
+        System.out.println("trying jmx: " + url);
+        receiver = new Receiver();
+        scraper = new JmxScraper(url, config.username, config.password, config.ssl, config.whitelistObjectNames, config.blacklistObjectNames, config.whitelistAttributes ,receiver);
+         start = System.nanoTime();
+         error = 0;
+        if ((config.startDelaySeconds > 0) &&
+          ((start - createTimeNanoSecs) / 1000000000L < config.startDelaySeconds)) {
+          throw new IllegalStateException("JMXCollector waiting for startDelaySeconds");
+        }
+        try {
+          scraper.doScrape();
+          break;
+        } catch (Exception e) {
+          error = 1;
+//          StringWriter sw = new StringWriter();
+//          e.printStackTrace(new PrintWriter(sw));
+//          LOGGER.severe("JMX scrape failed: " + sw.toString());
+        }
+    }
       List<MetricFamilySamples> mfsList = new ArrayList<MetricFamilySamples>();
       mfsList.addAll(receiver.metricFamilySamplesMap.values());
       List<MetricFamilySamples.Sample> samples = new ArrayList<MetricFamilySamples.Sample>();

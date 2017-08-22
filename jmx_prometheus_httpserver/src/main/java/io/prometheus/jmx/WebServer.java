@@ -10,8 +10,8 @@ public class WebServer {
 
    public static void main(String[] args) throws Exception {
      if (args.length < 2) {
-       System.err.println("Usage: WebServer <[hostname:]port> <yaml configuration file>");
-       System.exit(1);
+      System.err.println("Usage: WebServer <[hostname:]port> <yaml configuration file> <jmx_URL>");
+      System.exit(1);
      }
 
      String[] hostnamePort = args[0].split(":");
@@ -26,7 +26,21 @@ public class WebServer {
        socket = new InetSocketAddress(port);
      }
 
-     new JmxCollector(new File(args[1])).register();
+     JmxCollector jc = new JmxCollector(new File(args[1])).register();
+     if( args.length == 3) {
+      String urls [] = args[2].split(",");
+      String jmxUrl = "";
+      for(String url: urls) {
+        if( jmxUrl.equals("")) {
+          jmxUrl = "service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi";
+        }
+        else {
+          jmxUrl = jmxUrl + ",service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi";
+        }
+        
+      }      
+      jc.setJmxUrl(jmxUrl);
+   }
      new HTTPServer(socket, CollectorRegistry.defaultRegistry);
    }
 }
