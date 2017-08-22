@@ -69,8 +69,9 @@ public class JmxScraper {
     private String password;
     private boolean ssl;
     private List<ObjectName> whitelistObjectNames, blacklistObjectNames;
-
-    public JmxScraper(String jmxUrl, String username, String password, boolean ssl, List<ObjectName> whitelistObjectNames, List<ObjectName> blacklistObjectNames, MBeanReceiver receiver) {
+    private HashSet<String> whitelistAttributes;
+    
+    public JmxScraper(String jmxUrl, String username, String password, boolean ssl, List<ObjectName> whitelistObjectNames, List<ObjectName> blacklistObjectNames, HashSet<String> whitelistAttributes, MBeanReceiver receiver) {
         this.jmxUrl = jmxUrl;
         this.receiver = receiver;
         this.username = username;
@@ -78,6 +79,7 @@ public class JmxScraper {
         this.ssl = ssl;
         this.whitelistObjectNames = whitelistObjectNames;
         this.blacklistObjectNames = blacklistObjectNames;
+        this.whitelistAttributes = whitelistAttributes;        
     }
 
     /**
@@ -142,6 +144,9 @@ public class JmxScraper {
 
         for (int idx = 0; idx < attrInfos.length; ++idx) {
             MBeanAttributeInfo attr = attrInfos[idx];
+            if (!whitelistAttributes.contains(attr.getName())) {
+                continue;
+            }
             if (!attr.isReadable()) {
                 logScrape(mbeanName, attr, "not readable");
                 continue;

@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -59,6 +60,7 @@ public class JmxCollector extends Collector implements Collector.Describable {
       boolean lowercaseOutputLabelNames;
       List<ObjectName> whitelistObjectNames = new ArrayList<ObjectName>();
       List<ObjectName> blacklistObjectNames = new ArrayList<ObjectName>();
+      HashSet<String> whitelistAttributes = new HashSet<String>();      
       ArrayList<Rule> rules = new ArrayList<Rule>();
       long lastUpdate = 0L;
     }
@@ -157,6 +159,13 @@ public class JmxCollector extends Collector implements Collector.Describable {
           List<Object> names = (List<Object>) yamlConfig.get("blacklistObjectNames");
           for (Object name : names) {
             cfg.blacklistObjectNames.add(new ObjectName((String)name));
+          }
+        }
+        
+        if (yamlConfig.containsKey("whitelistAttributes")) {
+          List<Object> names = (List<Object>) yamlConfig.get("whitelistAttributes");
+          for (Object name : names) {
+            cfg.whitelistAttributes.add((String)name);
           }
         }
 
