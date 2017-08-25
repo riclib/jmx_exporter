@@ -79,7 +79,7 @@ public class JmxScraper {
         this.ssl = ssl;
         this.whitelistObjectNames = whitelistObjectNames;
         this.blacklistObjectNames = blacklistObjectNames;
-        this.whitelistAttributes = whitelistAttributes;        
+        this.whitelistAttributes = whitelistAttributes;           
     }
 
     /**
