@@ -105,7 +105,13 @@ public class JmxCollector extends Collector implements Collector.Describable {
     
     public void setJmxUrl(String jmxUrl) {
       config.jmxUrl = jmxUrl; // as an option
-  }
+    }
+
+    public void setJmxURLUserPasswd(String jmxUrl, String username, String password) {
+      config.jmxUrl = jmxUrl; // as an option
+      config.password = password;
+      config.username = username;
+    }
 
     private Config loadConfig(Map<String, Object> yamlConfig) throws MalformedObjectNameException {
         Config cfg = new Config();

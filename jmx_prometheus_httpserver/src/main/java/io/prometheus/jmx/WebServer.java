@@ -27,7 +27,7 @@ public class WebServer {
      }
 
      JmxCollector jc = new JmxCollector(new File(args[1])).register();
-     if( args.length == 3) {
+     if( args.length == 5) {
       String urls [] = args[2].split(",");
       String jmxUrl = "";
       for(String url: urls) {
@@ -39,8 +39,9 @@ public class WebServer {
         }
         
       }      
-      jc.setJmxUrl(jmxUrl);
-   }
+      jc.setJmxURLUserPasswd(jmxUrl, args[3], args[4]);
+    }
+    
      new HTTPServer(socket, CollectorRegistry.defaultRegistry);
    }
 }
