@@ -144,7 +144,7 @@ public class JmxScraper {
 
         for (int idx = 0; idx < attrInfos.length; ++idx) {
             MBeanAttributeInfo attr = attrInfos[idx];
-            if (!whitelistAttributes.contains(attr.getName())) {
+            if ( !whitelistAttributes.isEmpty() && !whitelistAttributes.contains(attr.getName())) {
                 continue;
             }
             if (!attr.isReadable()) {
