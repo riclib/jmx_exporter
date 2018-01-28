@@ -25,9 +25,8 @@ public class WebServer {
        port = Integer.parseInt(hostnamePort[0]);
        socket = new InetSocketAddress(port);
      }
-
      JmxCollector jc = new JmxCollector(new File(args[1])).register();
-     if( args.length == 5) {
+     if( args.length >= 3) { // JMX urls and potentially user and passwords in command line
       String urls [] = args[2].split(",");
       String jmxUrl = "";
       for(String url: urls) {
@@ -35,11 +34,13 @@ public class WebServer {
           jmxUrl = "service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi";
         }
         else {
-          jmxUrl = jmxUrl + ",service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi";
+          jmxUrl = jmxUrl + ",service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi"; 
         }
         
-      }      
-      jc.setJmxURLUserPasswd(jmxUrl, args[3], args[4]);
+      }
+      if( args.length == 5) {      //received user and password in command line
+        jc.setJmxURLUserPasswd(jmxUrl, args[3], args[4]);
+      }
     }
     
      new HTTPServer(socket, CollectorRegistry.defaultRegistry);
