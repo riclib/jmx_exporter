@@ -429,7 +429,7 @@ public class JmxCollector extends Collector implements Collector.Describable {
       long start = 0;
 
       for (String url : urls) {
-        System.out.println("trying jmx: " + url);
+//        System.out.println("trying jmx: " + url);
         receiver = new Receiver();
         scraper = new JmxScraper(url, config.username, config.password, config.ssl, config.whitelistObjectNames, config.blacklistObjectNames, config.whitelistAttributes ,receiver);
          start = System.nanoTime();
