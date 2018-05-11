@@ -1,0 +1,59 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch)-JmxCollector<collector>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "io.prometheus.jmx.JmxCollector",
+            "projectName": "collector",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-JmxScraper<collector>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "io.prometheus.jmx.JmxScraper",
+            "projectName": "collector",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-WebServer<jmx_prometheus_httpserver>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "io.prometheus.jmx.WebServer",
+            "projectName": "jmx_prometheus_httpserver",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-TestApplication<jmx_prometheus_javaagent>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "io.prometheus.jmx.TestApplication",
+            "projectName": "jmx_prometheus_javaagent",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Attach)",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 0
+        }
+    ]
+}
