@@ -36,10 +36,11 @@ public class WebServer {
         else {
           jmxUrl = jmxUrl + ",service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi"; 
         }
-        
       }
       if( args.length == 5) {      //received user and password in command line
         jc.setJmxURLUserPasswd(jmxUrl, args[3], args[4]);
+      } else {
+        jc.setJmxUrl(jmxUrl);
       }
     }
     

@@ -90,6 +90,7 @@ public class JmxScraper {
     public void doScrape() throws Exception {
         MBeanServerConnection beanConn;
         JMXConnector jmxc = null;
+//        System.out.println("connecting to " + jmxUrl);
         if (jmxUrl.isEmpty()) {
             beanConn = ManagementFactory.getPlatformMBeanServer();
         } else {
@@ -104,7 +105,6 @@ public class JmxScraper {
                 environment.put(RMIConnectorServer.RMI_CLIENT_SOCKET_FACTORY_ATTRIBUTE, clientSocketFactory);
                 environment.put("com.sun.jndi.rmi.factory.socket", clientSocketFactory);
             }
-            
             jmxc = JMXConnectorFactory.connect(new JMXServiceURL(jmxUrl), environment);
             beanConn = jmxc.getMBeanServerConnection();
         }
