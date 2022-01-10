@@ -1,0 +1,8 @@
+---
+#hostPort: ITSGBHHLSP00996:3551
+#username: pulse
+#password: QL0AFWMIX8NRZTKeof9cXsvbvu8=
+ssl: false
+#whitelistObjectNames: ["akka:type=Cluster"]
+#whitelistObjectNames: ["Server:name=HttpAdaptor"]
+#whitelistAttributes:  ["workers"]

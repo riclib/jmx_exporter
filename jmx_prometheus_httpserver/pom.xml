@@ -24,6 +24,12 @@
       <artifactId>simpleclient_httpserver</artifactId>
       <version>0.0.26</version>
     </dependency>
+  
+    <dependency>
+      <groupId>org.jasypt</groupId>
+      <artifactId>jasypt</artifactId>
+      <version>1.1</version>
+    </dependency>
   </dependencies>
 
 
@@ -35,8 +41,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
         <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
 

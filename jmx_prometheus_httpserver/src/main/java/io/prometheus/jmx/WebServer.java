@@ -2,16 +2,28 @@ package io.prometheus.jmx;
 
 import java.io.File;
 import java.net.InetSocketAddress;
+import java.util.Base64;
+
+import org.jasypt.util.*;
 
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.exporter.HTTPServer;
 
+
 public class WebServer {
 
    public static void main(String[] args) throws Exception {
+     TextEncryptor textEncryptor = new TextEncryptor();
+     textEncryptor.setPassword("VivaOBenfas!");
+
      if (args.length < 2) {
-      System.err.println("Usage: WebServer <[hostname:]port> <yaml configuration file> <jmx_URL>");
+      System.err.println("Usage: WebServer <[hostname:]port> <yaml configuration file> <jmx_URL> or Webserver encrypt passwd");
       System.exit(1);
+     }
+     if (args[0].equals("encrypt") ) {
+       String passwd = textEncryptor.encrypt(args[1]);
+       System.err.println("encrypted passwd is: E:" + passwd);
+       System.exit(0);
      }
 
      String[] hostnamePort = args[0].split(":");
@@ -38,7 +50,12 @@ public class WebServer {
         }
       }
       if( args.length == 5) {      //received user and password in command line
-        jc.setJmxURLUserPasswd(jmxUrl, args[3], args[4]);
+        String passwd = args[4];
+        if (passwd.startsWith("E:")) {
+            passwd = passwd.substring(2);
+            passwd = textEncryptor.decrypt(passwd);
+        }
+        jc.setJmxURLUserPasswd(jmxUrl, args[3], passwd);
       } else {
         jc.setJmxUrl(jmxUrl);
       }
