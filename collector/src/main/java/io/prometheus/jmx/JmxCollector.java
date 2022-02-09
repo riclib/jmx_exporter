@@ -455,6 +455,7 @@ public class JmxCollector extends Collector implements Collector.Describable {
                 socket.close();
                 LOGGER.info("Collecting from " + url);
                 scraper.doScrape();
+                collectSucceeded = true;
                 break;
             } catch (Exception e) {
                 error = 1;
