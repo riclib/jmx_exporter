@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.StringWriter;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -443,8 +445,16 @@ public class JmxCollector extends Collector implements Collector.Describable {
                 throw new IllegalStateException("JMXCollector waiting for startDelaySeconds");
             }
             try {
-                scraper.doScrape();
+                //test if the socket is up
+                Socket socket = new Socket();
+                String u = url.replace("service:jmx:rmi:///jndi/rmi://", "").replace("/jmxrmi", "");
+                String[] splitURL = u.split(":");
+                String server = splitURL[0];
+                int port = Integer. parseInt(splitURL[1]);
+                socket.connect(new InetSocketAddress(server, port), 5000);
+                socket.close();
                 LOGGER.info("Collecting from " + url);
+                scraper.doScrape();
                 break;
             } catch (Exception e) {
                 error = 1;
